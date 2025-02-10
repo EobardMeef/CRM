@@ -1,15 +1,21 @@
 import { useState } from 'react'
+import { updateTodo, deleteTodo } from '../api/todoApi'
 
 export default function TodoItem({ todo, onUpdate, onDelete }) {
 	const [isEditing, setIsEditing] = useState(false)
 	const [newTitle, setNewTitle] = useState(todo.title)
 
-	const handleSave = () => {
-		onUpdate(todo.id, {
-			title: newTitle,
-			isDone: todo.isDone,
-		})
-		setIsEditing(false)
+	const handleSave = async () => {
+		try {
+			await updateTodo(todo.id, {
+				title: newTitle,
+				isDone: todo.isDone,
+			})
+			onUpdate()
+			setIsEditing(false)
+		} catch (error) {
+			console.error('Ошибка добавления задачи: ', error)
+		}
 	}
 
 	const handleCancel = () => {
@@ -17,11 +23,29 @@ export default function TodoItem({ todo, onUpdate, onDelete }) {
 		setIsEditing(false)
 	}
 
-	const handleCheckboxChange = () => {
-		onUpdate(todo.id, {
-			...todo,
-			isDone: !todo.isDone,
-		})
+	const handleCheckboxChange = async () => {
+		try {
+			await updateTodo(todo.id, {
+				...todo,
+				isDone: !todo.isDone,
+			})
+			onUpdate()
+		} catch (error) {
+			console.error('Ошибка добалвения задачи: ', error)
+		}
+		// onUpdate(todo.id, {
+		// 	...todo,
+		// 	isDone: !todo.isDone,
+		// })
+	}
+
+	const handleDelete = async () => {
+		try {
+			await deleteTodo(todo.id)
+			onDelete()
+		} catch (error) {
+			console.error('Ошибка добавления задачи: ', error)
+		}
 	}
 
 	return (
@@ -75,12 +99,7 @@ export default function TodoItem({ todo, onUpdate, onDelete }) {
 						>
 							E
 						</button>
-						<button
-							className='btn-remove btn'
-							onClick={() => {
-								onDelete(todo.id)
-							}}
-						>
+						<button className='btn-remove btn' onClick={handleDelete}>
 							D
 						</button>
 					</div>
