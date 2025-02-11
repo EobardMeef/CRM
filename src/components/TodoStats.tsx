@@ -1,4 +1,17 @@
-export default function TodoStats({ todos, filter, setFilter }) {
+import React from 'react'
+import { Todo } from '../types/types'
+
+interface TodoStatsProps {
+	todos: Todo[]
+	filter: string
+	setFilter: (filter: string) => void
+}
+
+export default function TodoStats({
+	todos,
+	filter,
+	setFilter,
+}: TodoStatsProps) {
 	return (
 		<div className='todo-stats'>
 			<span

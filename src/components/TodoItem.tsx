@@ -1,9 +1,16 @@
-import { useState } from 'react'
+import React, { useState } from 'react'
 import { updateTodo, deleteTodo } from '../api/todoApi'
+import { Todo } from '../types/types'
 
-export default function TodoItem({ todo, onUpdate, onDelete }) {
-	const [isEditing, setIsEditing] = useState(false)
-	const [newTitle, setNewTitle] = useState(todo.title)
+interface TodoItemProps {
+	todo: Todo
+	onUpdate: () => void
+	onDelete: () => void
+}
+
+export default function TodoItem({ todo, onUpdate, onDelete }: TodoItemProps) {
+	const [isEditing, setIsEditing] = useState<boolean>(false)
+	const [newTitle, setNewTitle] = useState<string>(todo.title)
 
 	const handleSave = async () => {
 		try {
@@ -14,7 +21,7 @@ export default function TodoItem({ todo, onUpdate, onDelete }) {
 			onUpdate()
 			setIsEditing(false)
 		} catch (error) {
-			console.error('Ошибка добавления задачи: ', error)
+			console.error('Ошибка обновления задачи:', error)
 		}
 	}
 
@@ -31,12 +38,8 @@ export default function TodoItem({ todo, onUpdate, onDelete }) {
 			})
 			onUpdate()
 		} catch (error) {
-			console.error('Ошибка добалвения задачи: ', error)
+			console.error('Ошибка обновления задачи:', error)
 		}
-		// onUpdate(todo.id, {
-		// 	...todo,
-		// 	isDone: !todo.isDone,
-		// })
 	}
 
 	const handleDelete = async () => {
@@ -44,7 +47,7 @@ export default function TodoItem({ todo, onUpdate, onDelete }) {
 			await deleteTodo(todo.id)
 			onDelete()
 		} catch (error) {
-			console.error('Ошибка добавления задачи: ', error)
+			console.error('Ошибка удаления задачи:', error)
 		}
 	}
 
@@ -56,9 +59,7 @@ export default function TodoItem({ todo, onUpdate, onDelete }) {
 						className='todo-list-input'
 						type='text'
 						value={newTitle}
-						onChange={e => {
-							setNewTitle(e.target.value)
-						}}
+						onChange={e => setNewTitle(e.target.value)}
 					/>
 					<div>
 						<button className='btn-edit btn' onClick={handleSave}>
@@ -91,12 +92,7 @@ export default function TodoItem({ todo, onUpdate, onDelete }) {
 						</label>
 					</div>
 					<div className='todo-buttons'>
-						<button
-							className='btn-edit btn'
-							onClick={() => {
-								setIsEditing(true)
-							}}
-						>
+						<button className='btn-edit btn' onClick={() => setIsEditing(true)}>
 							E
 						</button>
 						<button className='btn-remove btn' onClick={handleDelete}>

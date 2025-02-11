@@ -1,6 +1,20 @@
+import React from 'react'
 import TodoItem from './TodoItem'
+import { Todo } from '../types/types'
 
-export default function TodoList({ todos, filter, onDelete, onUpdate }) {
+interface TodoListProps {
+	todos: Todo[]
+	filter: string
+	onUpdate: () => void
+	onDelete: () => void
+}
+
+export default function TodoList({
+	todos,
+	filter,
+	onUpdate,
+	onDelete,
+}: TodoListProps) {
 	if (!todos.length) {
 		return <p style={{ padding: 50 }}>Задач нет :)</p>
 	}
@@ -11,14 +25,15 @@ export default function TodoList({ todos, filter, onDelete, onUpdate }) {
 		if (filter === 'done') return todo.isDone
 		return true
 	})
+
 	return (
 		<ul id='todos'>
 			{filteredTodos.map(todo => (
 				<TodoItem
 					key={todo.id}
 					todo={todo}
-					onDelete={onDelete}
 					onUpdate={onUpdate}
+					onDelete={onDelete}
 				/>
 			))}
 		</ul>
