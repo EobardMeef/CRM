@@ -4,11 +4,10 @@ import { Todo } from '../types/types'
 
 interface TodoItemProps {
 	todo: Todo
-	onUpdate: () => void
-	onDelete: () => void
+	loadTodos: () => void
 }
 
-export default function TodoItem({ todo, onUpdate, onDelete }: TodoItemProps) {
+export default function TodoItem({ todo, loadTodos }: TodoItemProps) {
 	const [isEditing, setIsEditing] = useState<boolean>(false)
 	const [newTitle, setNewTitle] = useState<string>(todo.title)
 
@@ -18,7 +17,7 @@ export default function TodoItem({ todo, onUpdate, onDelete }: TodoItemProps) {
 				title: newTitle,
 				isDone: todo.isDone,
 			})
-			onUpdate()
+			loadTodos()
 			setIsEditing(false)
 		} catch (error) {
 			console.error('Ошибка обновления задачи:', error)
@@ -36,7 +35,7 @@ export default function TodoItem({ todo, onUpdate, onDelete }: TodoItemProps) {
 				...todo,
 				isDone: !todo.isDone,
 			})
-			onUpdate()
+			loadTodos()
 		} catch (error) {
 			console.error('Ошибка обновления задачи:', error)
 		}
@@ -45,7 +44,7 @@ export default function TodoItem({ todo, onUpdate, onDelete }: TodoItemProps) {
 	const handleDelete = async () => {
 		try {
 			await deleteTodo(todo.id)
-			onDelete()
+			loadTodos()
 		} catch (error) {
 			console.error('Ошибка удаления задачи:', error)
 		}

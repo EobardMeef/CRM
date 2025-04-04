@@ -1,17 +1,13 @@
 import React from 'react'
-import { Todo } from '../types/types'
+import { TodoInfo } from '../types/types'
 
 interface TodoStatsProps {
-	todos: Todo[]
+	info: TodoInfo
 	filter: string
 	setFilter: (filter: string) => void
 }
 
-export default function TodoStats({
-	todos,
-	filter,
-	setFilter,
-}: TodoStatsProps) {
+export default function TodoStats({ info, filter, setFilter }: TodoStatsProps) {
 	return (
 		<div className='todo-stats'>
 			<span
@@ -21,25 +17,25 @@ export default function TodoStats({
 					fontWeight: filter === 'all' ? 'bold' : 'normal',
 				}}
 			>
-				Все: {todos.length}{' '}
+				Все: {info.all}
 			</span>
 			<span
-				onClick={() => setFilter('in-progress')}
+				onClick={() => setFilter('inWork')}
 				style={{
 					cursor: 'pointer',
-					fontWeight: filter === 'in-progress' ? 'bold' : 'normal',
+					fontWeight: filter === 'inWork' ? 'bold' : 'normal',
 				}}
 			>
-				В работе: {todos.filter(todo => !todo.isDone).length}
+				В работе: {info.inWork}
 			</span>
 			<span
-				onClick={() => setFilter('done')}
+				onClick={() => setFilter('completed')}
 				style={{
 					cursor: 'pointer',
-					fontWeight: filter === 'done' ? 'bold' : 'normal',
+					fontWeight: filter === 'completed' ? 'bold' : 'normal',
 				}}
 			>
-				Сделано: {todos.filter(todo => todo.isDone).length}
+				Сделано: {info.completed}
 			</span>
 		</div>
 	)

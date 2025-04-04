@@ -11,6 +11,11 @@ function App() {
 	const [todos, setTodos] = useState<Todo[]>([])
 	const [filter, setFilter] = useState<string>('all')
 	const [loading, setLoading] = useState<boolean>(false)
+	const [info, setInfo] = useState<TodoInfo>({
+		all: 0,
+		completed: 0,
+		inWork: 0,
+	})
 
 	useEffect(() => {
 		loadTodos()
@@ -21,6 +26,8 @@ function App() {
 		try {
 			const data: MetaResponse<Todo, TodoInfo> = await getTodos(filter)
 			setTodos(data.data)
+			setInfo(data.info || { all: 0, completed: 0, inWork: 0 })
+			console.log(data)
 		} catch (error) {
 			console.error('Ошибка загрузки задач:', error)
 		} finally {
@@ -33,16 +40,11 @@ function App() {
 			<div className='container'>
 				<div className='wrapper'>
 					<TodoForm onAdd={loadTodos} />
-					<TodoStats filter={filter} setFilter={setFilter} todos={todos} />
+					<TodoStats filter={filter} info={info} setFilter={setFilter} />
 					{loading ? (
 						<p style={{ padding: 50 }}>Загрузка...</p>
 					) : (
-						<TodoList
-							todos={todos}
-							filter={filter}
-							onUpdate={loadTodos}
-							onDelete={loadTodos}
-						/>
+						<TodoList todos={todos} loadTodos={loadTodos} />
 					)}
 				</div>
 			</div>
