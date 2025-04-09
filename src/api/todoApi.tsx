@@ -1,9 +1,15 @@
-import { Todo, TodoRequest, MetaResponse, TodoInfo } from '../types/types'
+import {
+	Todo,
+	TodoRequest,
+	MetaResponse,
+	TodoInfo,
+	TodoFilter,
+} from '../types/types'
 
 const BASE_URL = 'https://easydev.club/api/v2'
 
 export async function getTodos(
-	status: string
+	status: TodoFilter
 ): Promise<MetaResponse<Todo, TodoInfo>> {
 	const response = await fetch(`${BASE_URL}/todos?filter=${status}`)
 	return response.json()

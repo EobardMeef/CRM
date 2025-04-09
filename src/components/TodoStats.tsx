@@ -1,10 +1,10 @@
 import React from 'react'
-import { TodoInfo } from '../types/types'
+import { TodoFilter, TodoInfo } from '../types/types'
 
 interface TodoStatsProps {
 	info: TodoInfo
-	filter: string
-	setFilter: (filter: string) => void
+	filter: TodoFilter
+	setFilter: (filter: TodoFilter) => void
 }
 
 export default function TodoStats({ info, filter, setFilter }: TodoStatsProps) {

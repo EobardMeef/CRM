@@ -5,11 +5,11 @@ import TodoForm from './components/TodoForm'
 import TodoStats from './components/TodoStats'
 
 import { getTodos } from './api/todoApi'
-import { Todo, TodoInfo, MetaResponse } from './types/types'
+import { Todo, TodoInfo, MetaResponse, TodoFilter } from './types/types'
 
 function App() {
 	const [todos, setTodos] = useState<Todo[]>([])
-	const [filter, setFilter] = useState<string>('all')
+	const [filter, setFilter] = useState<TodoFilter>('all')
 	const [loading, setLoading] = useState<boolean>(false)
 	const [info, setInfo] = useState<TodoInfo>({
 		all: 0,
@@ -27,7 +27,6 @@ function App() {
 			const data: MetaResponse<Todo, TodoInfo> = await getTodos(filter)
 			setTodos(data.data)
 			setInfo(data.info || { all: 0, completed: 0, inWork: 0 })
-			console.log(data)
 		} catch (error) {
 			console.error('Ошибка загрузки задач:', error)
 		} finally {

@@ -6,7 +6,7 @@ export interface TodoRequest {
 export interface Todo {
 	id: number
 	title: string
-	created: string // ISO date string
+	created: string
 	isDone: boolean
 }
 
@@ -23,3 +23,5 @@ export interface MetaResponse<T, N> {
 		totalAmount: number
 	}
 }
+
+export type TodoFilter = 'all' | 'inWork' | 'completed'
