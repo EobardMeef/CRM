@@ -1,6 +1,8 @@
 import React from 'react'
 import { TodoFilter, TodoInfo } from '../types/types'
 
+import { Tabs } from 'antd'
+
 interface TodoStatsProps {
 	info: TodoInfo
 	filter: TodoFilter
@@ -8,35 +10,14 @@ interface TodoStatsProps {
 }
 
 export default function TodoStats({ info, filter, setFilter }: TodoStatsProps) {
+	const handleTabChange = (key: string) => {
+		setFilter(key as TodoFilter)
+	}
 	return (
-		<div className='todo-stats'>
-			<span
-				onClick={() => setFilter('all')}
-				style={{
-					cursor: 'pointer',
-					fontWeight: filter === 'all' ? 'bold' : 'normal',
-				}}
-			>
-				Все: {info.all}
-			</span>
-			<span
-				onClick={() => setFilter('inWork')}
-				style={{
-					cursor: 'pointer',
-					fontWeight: filter === 'inWork' ? 'bold' : 'normal',
-				}}
-			>
-				В работе: {info.inWork}
-			</span>
-			<span
-				onClick={() => setFilter('completed')}
-				style={{
-					cursor: 'pointer',
-					fontWeight: filter === 'completed' ? 'bold' : 'normal',
-				}}
-			>
-				Сделано: {info.completed}
-			</span>
-		</div>
+		<Tabs activeKey={filter} onChange={handleTabChange}>
+			<Tabs.TabPane tab={`Все (${info.all})`} key='all' />
+			<Tabs.TabPane tab={`В работе (${info.inWork})`} key='inWork' />
+			<Tabs.TabPane tab={`Сделано (${info.completed})`} key='completed' />
+		</Tabs>
 	)
 }

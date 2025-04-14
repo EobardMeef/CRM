@@ -4,6 +4,10 @@ import TodoList from './components/TodoList'
 import TodoForm from './components/TodoForm'
 import TodoStats from './components/TodoStats'
 
+import 'antd/dist/reset.css'
+import { Spin } from 'antd'
+import { LoadingOutlined } from '@ant-design/icons'
+
 import { getTodos } from './api/todoApi'
 import { Todo, TodoInfo, MetaResponse, TodoFilter } from './types/types'
 
@@ -41,7 +45,11 @@ function App() {
 					<TodoForm onAdd={loadTodos} />
 					<TodoStats filter={filter} info={info} setFilter={setFilter} />
 					{loading ? (
-						<p style={{ padding: 50 }}>Загрузка...</p>
+						<Spin
+							size='large'
+							indicator={<LoadingOutlined spin />}
+							style={{ padding: 50 }}
+						/>
 					) : (
 						<TodoList todos={todos} loadTodos={loadTodos} />
 					)}

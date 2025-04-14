@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
 import { updateTodo, deleteTodo } from '../api/todoApi'
 import { Todo } from '../types/types'
+import { Checkbox, Button, Input } from 'antd'
+import type { CheckboxChangeEvent } from 'antd/es/checkbox'
 
 interface TodoItemProps {
 	todo: Todo
@@ -29,11 +31,11 @@ export default function TodoItem({ todo, loadTodos }: TodoItemProps) {
 		setIsEditing(false)
 	}
 
-	const handleCheckboxChange = async () => {
+	const handleCheckboxChange = async (e: CheckboxChangeEvent) => {
 		try {
 			await updateTodo(todo.id, {
 				...todo,
-				isDone: !todo.isDone,
+				isDone: e.target.checked,
 			})
 			loadTodos()
 		} catch (error) {
@@ -54,49 +56,51 @@ export default function TodoItem({ todo, loadTodos }: TodoItemProps) {
 		<li id='todo-item'>
 			{isEditing ? (
 				<>
-					<input
+					<Input
 						className='todo-list-input'
-						type='text'
 						value={newTitle}
 						onChange={e => setNewTitle(e.target.value)}
 					/>
-					<div>
-						<button className='btn-edit btn' onClick={handleSave}>
+					<div className='btn-center '>
+						<Button
+							className='btn-edit btn'
+							type='primary'
+							onClick={handleSave}
+						>
 							Save
-						</button>
-						<button className='btn-remove btn' onClick={handleCancel}>
+						</Button>
+						<Button className='btn-remove btn' onClick={handleCancel}>
 							Cancel
-						</button>
+						</Button>
 					</div>
 				</>
 			) : (
 				<>
 					<div className='todo-content'>
-						<input
-							type='checkbox'
-							id={`checkbox-${todo.id}`}
+						<Checkbox
 							checked={todo.isDone}
 							onChange={handleCheckboxChange}
 							className='round-checkbox'
-						/>
-						<label
-							htmlFor={`checkbox-${todo.id}`}
-							style={{
-								textDecoration: todo.isDone ? 'line-through' : 'none',
-								opacity: todo.isDone ? '0.6' : '1',
-								cursor: 'pointer',
-							}}
 						>
-							{todo.title}
-						</label>
+							<span
+								className='checkbox-label'
+								style={{
+									textDecoration: todo.isDone ? 'line-through' : 'none',
+									opacity: todo.isDone ? 0.6 : 1,
+									cursor: 'pointer',
+								}}
+							>
+								{todo.title}
+							</span>
+						</Checkbox>
 					</div>
 					<div className='todo-buttons'>
-						<button className='btn-edit btn' onClick={() => setIsEditing(true)}>
-							E
-						</button>
-						<button className='btn-remove btn' onClick={handleDelete}>
-							D
-						</button>
+						<Button className='btn-edit btn' onClick={() => setIsEditing(true)}>
+							Edit
+						</Button>
+						<Button className='btn-remove btn' onClick={handleDelete}>
+							Delete
+						</Button>
 					</div>
 				</>
 			)}
