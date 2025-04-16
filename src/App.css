@@ -22,6 +22,7 @@ a {
 	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 	background: linear-gradient(#ecedef, #f5f8fa);
 	padding: 0 10px 20px 10px;
+	border-radius: 15px;
 }
 
 .container {
@@ -33,15 +34,6 @@ a {
 	margin: 0 auto;
 	max-width: 600px;
 	width: 90%;
-}
-
-#header {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	padding: 30px;
-	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-	background-color: #72c5fd;
 }
 
 #form {
@@ -58,18 +50,27 @@ a {
 	opacity: 0.6;
 }
 
+:where(.css-dev-only-do-not-override-1d4w9r2).ant-form-inline .ant-form-item {
+	flex: none;
+	margin-inline-end: 0px;
+	margin-bottom: 0;
+}
+
 .form-input:focus {
 	outline: none;
 }
 
-.todo-stats {
+.todo-buttons {
 	display: flex;
-	width: 320px;
-	justify-content: space-between;
-	margin-top: 10px;
-	color: rgb(112, 112, 250);
-	font-size: 20px;
-	font-family: 'Arial';
+	justify-content: center;
+	align-items: center;
+	flex-direction: row;
+	gap: 5px;
+}
+
+.btn-center {
+	display: flex;
+	flex-direction: column;
 }
 
 .btn {
@@ -84,16 +85,9 @@ a {
 }
 
 .btn-add {
-	padding: 10px 38px;
+	padding: 20px 38px;
 	margin-left: 10px;
 	background-color: #5393ff;
-}
-
-#filters {
-	display: flex;
-	flex-direction: row;
-	margin-top: 15px;
-	column-gap: 50px;
 }
 
 #todos {
@@ -112,10 +106,6 @@ a {
 	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.checkbox-item {
-	margin-right: 10px;
-}
-
 .btn-edit {
 	background-color: #5592fd;
 	padding: 10px;
@@ -124,14 +114,6 @@ a {
 .btn-remove {
 	background-color: #fd6654;
 	padding: 10px;
-	margin-left: 10px;
-}
-
-.todo-list-input {
-	padding: 10px;
-	border: none;
-	border-radius: 5px;
-	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .todo-list-input:focus {
@@ -145,25 +127,20 @@ a {
 	max-width: 70%;
 }
 
-.todo-content label {
+.checkbox-label {
 	word-break: break-word;
 	line-height: 1.5;
 	overflow: hidden;
 	flex-grow: 1;
 }
-
 .round-checkbox {
-	appearance: none;
 	min-width: 20px;
-	height: 20px;
-	border: 1px solid #555;
-	border-radius: 50%;
-	outline: none;
-	cursor: pointer;
-	transition: background-color 0.2s ease, border-color 0.2s ease;
 }
 
-.round-checkbox:checked {
-	background-color: #96bcfd;
-	border-color: #201c1c;
+#todo-item {
+	gap: 10px;
+}
+
+.ant-checkbox-inner {
+	border-radius: 50% !important;
 }

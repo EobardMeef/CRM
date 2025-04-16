@@ -1,44 +1,58 @@
 import React, { useState } from 'react'
 import { addTodo } from '../api/todoApi'
+import message from 'antd/es/message'
+import { Form, Input, Button } from 'antd'
 
 interface TodoFormProps {
 	onAdd: () => void
 }
 
 export default function TodoForm({ onAdd }: TodoFormProps) {
-	const [title, setTitle] = useState<string>('')
+	const [form] = Form.useForm()
 
-	const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		setTitle(e.target.value)
-	}
-
-	const handleSubmit = async (e: React.FormEvent) => {
-		e.preventDefault()
-		if (title.length < 2 || title.length > 64) {
-			alert('Заголовок должен быть не менее 2 и не более 64 символов')
-			return
-		}
+	const handleSubmit = async (values: { title: string }) => {
 		try {
-			await addTodo({ title: title, isDone: false })
+			await addTodo({ title: values.title, isDone: false })
+			message.success('Задача добавлена')
 			onAdd()
-			setTitle('')
+			form.resetFields()
 		} catch (error) {
+			message.error('Ошибка добавления задачи')
 			console.error('Ошибка добавления задачи:', error)
 		}
 	}
 
 	return (
-		<form id='form' onSubmit={handleSubmit}>
-			<input
-				type='text'
-				className='form-input'
-				placeholder='Task To Be Done...'
-				value={title}
-				onChange={handleInputChange}
-			/>
-			<button className='btn-add btn' type='submit'>
-				Add
-			</button>
-		</form>
+		<Form
+			form={form}
+			id='form'
+			onFinish={handleSubmit}
+			layout='inline'
+			style={{
+				display: 'flex',
+				justifyContent: 'center',
+				alignItems: 'center',
+			}}
+		>
+			<Form.Item
+				name='title'
+				rules={[
+					{ required: true, message: 'Заголовок обязателен' },
+					{ min: 2, message: 'Минимум 2 символа' },
+					{ max: 64, message: 'Максимум 64 символа' },
+				]}
+			>
+				<Input
+					style={{ borderRadius: 0 }}
+					className='form-input'
+					placeholder='Task To Be Done...'
+				/>
+			</Form.Item>
+			<Form.Item>
+				<Button className='btn-add btn' type='primary' htmlType='submit'>
+					Add
+				</Button>
+			</Form.Item>
+		</Form>
 	)
 }
