@@ -16,10 +16,11 @@ export default function TodoList({ todos, loadTodos }: TodoListProps) {
 
 	return (
 		<List
+			split={false}
 			dataSource={todos}
 			renderItem={todo => (
-				<List.Item>
-					<TodoItem key={todo.id} todo={todo} loadTodos={loadTodos} />
+				<List.Item style={{ padding: 0 }} key={todo.id}>
+					<TodoItem todo={todo} loadTodos={loadTodos} />
 				</List.Item>
 			)}
 		/>

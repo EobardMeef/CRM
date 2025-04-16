@@ -3,6 +3,7 @@ import { updateTodo, deleteTodo } from '../api/todoApi'
 import { Todo } from '../types/types'
 import { Checkbox, Button, Input } from 'antd'
 import type { CheckboxChangeEvent } from 'antd/es/checkbox'
+import message from 'antd/es/message'
 
 interface TodoItemProps {
 	todo: Todo
@@ -19,9 +20,11 @@ export default function TodoItem({ todo, loadTodos }: TodoItemProps) {
 				title: newTitle,
 				isDone: todo.isDone,
 			})
+			message.success('Задача обновлена')
 			loadTodos()
 			setIsEditing(false)
 		} catch (error) {
+			message.error('Ошибка обновления задачи')
 			console.error('Ошибка обновления задачи:', error)
 		}
 	}
@@ -39,6 +42,7 @@ export default function TodoItem({ todo, loadTodos }: TodoItemProps) {
 			})
 			loadTodos()
 		} catch (error) {
+			message.error('Ошибка обновления статуса')
 			console.error('Ошибка обновления задачи:', error)
 		}
 	}
@@ -46,8 +50,10 @@ export default function TodoItem({ todo, loadTodos }: TodoItemProps) {
 	const handleDelete = async () => {
 		try {
 			await deleteTodo(todo.id)
+			message.success('Задача удалена')
 			loadTodos()
 		} catch (error) {
+			message.error('Ошибка удаления задачи')
 			console.error('Ошибка удаления задачи:', error)
 		}
 	}

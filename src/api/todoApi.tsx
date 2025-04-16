@@ -1,3 +1,4 @@
+import axios from 'axios'
 import {
 	Todo,
 	TodoRequest,
@@ -8,33 +9,30 @@ import {
 
 const BASE_URL = 'https://easydev.club/api/v2'
 
+const api = axios.create({
+	baseURL: BASE_URL,
+	headers: { 'Content-Type': 'application/json' },
+})
+
 export async function getTodos(
 	status: TodoFilter
 ): Promise<MetaResponse<Todo, TodoInfo>> {
-	const response = await fetch(`${BASE_URL}/todos?filter=${status}`)
-	return response.json()
+	const response = await api.get<MetaResponse<Todo, TodoInfo>>('/todos', {
+		params: { filter: status },
+	})
+	return response.data
 }
 
 export async function addTodo(todo: TodoRequest): Promise<Todo> {
-	const response = await fetch(`${BASE_URL}/todos`, {
-		method: 'POST',
-		headers: { 'Content-Type': 'application/json' },
-		body: JSON.stringify(todo),
-	})
-	return response.json()
+	const response = await api.post<Todo>('/todos', todo)
+	return response.data
 }
 
 export async function updateTodo(id: number, todo: TodoRequest): Promise<Todo> {
-	const response = await fetch(`${BASE_URL}/todos/${id}`, {
-		method: 'PUT',
-		headers: { 'Content-Type': 'application/json' },
-		body: JSON.stringify(todo),
-	})
-	return response.json()
+	const response = await api.put<Todo>(`/todos/${id}`, todo)
+	return response.data
 }
 
 export async function deleteTodo(id: number): Promise<void> {
-	await fetch(`${BASE_URL}/todos/${id}`, {
-		method: 'DELETE',
-	})
+	await api.delete(`/todos/${id}`)
 }

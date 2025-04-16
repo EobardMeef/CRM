@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { addTodo } from '../api/todoApi'
-
+import message from 'antd/es/message'
 import { Form, Input, Button } from 'antd'
 
 interface TodoFormProps {
@@ -13,15 +13,27 @@ export default function TodoForm({ onAdd }: TodoFormProps) {
 	const handleSubmit = async (values: { title: string }) => {
 		try {
 			await addTodo({ title: values.title, isDone: false })
+			message.success('Задача добавлена')
 			onAdd()
 			form.resetFields()
 		} catch (error) {
+			message.error('Ошибка добавления задачи')
 			console.error('Ошибка добавления задачи:', error)
 		}
 	}
 
 	return (
-		<Form id='form' onFinish={handleSubmit} layout='inline'>
+		<Form
+			form={form}
+			id='form'
+			onFinish={handleSubmit}
+			layout='inline'
+			style={{
+				display: 'flex',
+				justifyContent: 'center',
+				alignItems: 'center',
+			}}
+		>
 			<Form.Item
 				name='title'
 				rules={[
@@ -30,7 +42,11 @@ export default function TodoForm({ onAdd }: TodoFormProps) {
 					{ max: 64, message: 'Максимум 64 символа' },
 				]}
 			>
-				<Input className='form-input' placeholder='Task To Be Done...' />
+				<Input
+					style={{ borderRadius: 0 }}
+					className='form-input'
+					placeholder='Task To Be Done...'
+				/>
 			</Form.Item>
 			<Form.Item>
 				<Button className='btn-add btn' type='primary' htmlType='submit'>
